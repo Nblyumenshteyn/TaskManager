@@ -13,7 +13,7 @@ services:
       - 3001:3001
       - 3002:3002
     depends_on:
-      - exit
+      - db
     environment: &web-environment
       BUNDLE_PATH: /bundle_cache
       GEM_HOME: /bundle_cache
