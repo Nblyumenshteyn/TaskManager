@@ -1,4 +1,5 @@
 class Web::SessionsController < Web::ApplicationController
+  include AuthHelper
   def new
     @session = SessionForm.new
   end
