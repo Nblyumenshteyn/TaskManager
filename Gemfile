@@ -32,9 +32,6 @@ gem 'state_machines'
 gem 'state_machines-activerecord'
 gem 'slim-rails'
 
-gem 'ransack', github: 'activerecord-hackery/ransack'
-gem 'kaminari'
-
 group :development, :test do
   gem 'factory_bot_rails'
   gem 'rubocop'
