@@ -34,6 +34,8 @@ gem 'slim-rails'
 
 gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'kaminari'
+gem 'responders'
+gem 'active_model_serializers'
 
 group :development, :test do
   gem 'factory_bot_rails'
