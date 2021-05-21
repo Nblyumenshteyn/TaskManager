@@ -4,8 +4,8 @@ ARG RAILS_ROOT=/task_manager
 ARG PACKAGES="vim openssl-dev postgresql-dev build-base curl nodejs yarn less tzdata git postgresql-client bash screen"
 
 RUN apk update \
-    && apk upgrade \
-    && apk add --update --no-cache $PACKAGES
+  && apk upgrade \
+  && apk add --update --no-cache $PACKAGES
 
 RUN gem install bundler:2.1.4
 
