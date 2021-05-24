@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   root :to => "web/boards#show"
+  resources :tasks, defaults: {format: :json}
+
 
   scope module: :web do
     resource :board, only: :show
@@ -15,4 +17,4 @@ Rails.application.routes.draw do
       resources :tasks, only: [:index, :show, :create, :update, :destroy]
     end
   end
-end 
+end
