@@ -1,8 +1,7 @@
-/* eslint-disable no-use-before-define */
 import React, { useEffect, useState } from 'react';
 import KanbanBoard from '@lourenci/react-kanban';
 import { propOr } from 'ramda';
-
+import ColumnHeader from 'components/ColumnHeader';
 import Task from 'components/Task';
 import TasksRepository from 'repositories/TasksRepository';
 
@@ -28,8 +27,6 @@ const initialBoard = {
 const TaskBoard = () => {
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
-  useEffect(() => loadBoard(), []);
-  useEffect(() => generateBoard(), [boardCards]);
 
   const loadColumn = (state, page, perPage) =>
     TasksRepository.index({
@@ -47,9 +44,20 @@ const TaskBoard = () => {
     });
   };
 
+  const loadColumnMore = (state, page = 1, perPage = 10) => {
+    loadColumn(state, page, perPage).then(({ data }) => {
+      setBoardCards((prevState) => {
+        const updatedCards = [...prevState[state].cards, ...data.items];
+        return {
+          ...prevState,
+          [state]: { cards: updatedCards, meta: data.meta },
+        };
+      });
+    });
+  };
+
   const generateBoard = () => {
-    // eslint-disable-next-line no-shadow
-    const board = {
+    const newBoard = {
       columns: STATES.map(({ key, value }) => ({
         id: key,
         title: value,
@@ -58,14 +66,24 @@ const TaskBoard = () => {
       })),
     };
 
-    setBoard(board);
+    setBoard(newBoard);
   };
 
   const loadBoard = () => {
     STATES.map(({ key }) => loadColumnInitial(key));
   };
 
-  return <KanbanBoard renderCard={(card) => <Task task={card} />}>{board}</KanbanBoard>;
+  useEffect(() => loadBoard(), []);
+  useEffect(() => generateBoard(), [boardCards]);
+
+  return (
+    <KanbanBoard
+      renderCard={(card) => <Task task={card} />}
+      renderColumnHeader={(column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />}
+    >
+      {board}
+    </KanbanBoard>
+  );
 };
 
 export default TaskBoard;
