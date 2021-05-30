@@ -6,7 +6,6 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
-// eslint-disable-next-line import/named
 import useStyles from './useStyles';
 
 const Task = ({ task }) => {

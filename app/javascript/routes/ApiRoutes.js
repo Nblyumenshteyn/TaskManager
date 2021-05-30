@@ -23,7 +23,7 @@ const __jsr = ((that) => {
             support: () => typeof module === "object",
         },
         AMD: {
-            define: (routes) => 
+            define: (routes) =>
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             define([], function () {
                 return routes;

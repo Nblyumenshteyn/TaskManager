@@ -11,8 +11,14 @@ class Api::V1::ApplicationController < Api::ApplicationController
     }
   end
 
-  def ransack_params
-    params.to_unsafe_h.fetch(:q, { s: RANSACK_DEFAULT_SORT })
+  def ransack_params(permitted_keys = nil)
+    ransack = if permitted_keys.present?
+      params.permit(q: permitted_keys).fetch(:q, {})
+    else
+      params.to_unsafe_h.fetch(:q, {})
+    end
+    ransack[:s] ||= self.class::RANSACK_DEFAULT_SORT
+    ransack
   end
 
   def page
