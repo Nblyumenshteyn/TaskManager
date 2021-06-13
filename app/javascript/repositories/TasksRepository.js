@@ -8,12 +8,12 @@ export default {
   },
 
   show(id) {
-    const path = routes.apiV1TaskPath(id);
+    const path = routes.apiV1TasksPath(id);
     return FetchHelper.get(path);
   },
 
   update(id, task = {}) {
-    const path = routes.apiV1TasksPath(id);
+    const path = routes.apiV1TaskPath(id);
     return FetchHelper.put(path, { task });
   },
 

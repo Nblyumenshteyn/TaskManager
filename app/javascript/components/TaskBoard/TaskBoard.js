@@ -6,8 +6,8 @@ import Task from 'components/Task';
 import AddPopup from 'components/AddPopup';
 import TaskForm from 'forms/TaskForm';
 import TasksRepository from 'repositories/TasksRepository';
-import AddIcon from '@material-ui/core/IconButton';
-import Fab from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
 import useStyles from './useStyles';
 
 const STATES = [
@@ -40,6 +40,21 @@ const TaskBoard = () => {
   const [boardCards, setBoardCards] = useState([]);
   const [mode, setMode] = useState(MODES.NONE);
 
+  const generateBoard = () => {
+    const newBoard = {
+      columns: STATES.map(({ key, value }) => ({
+        id: key,
+        title: value,
+        cards: propOr({}, 'cards', boardCards[key]),
+        meta: propOr({}, 'meta', boardCards[key]),
+      })),
+    };
+
+    setBoard(newBoard);
+  };
+
+  useEffect(() => generateBoard(), [boardCards]);
+
   const loadColumn = (state, page, perPage) =>
     TasksRepository.index({
       q: { stateEq: state },
@@ -68,25 +83,11 @@ const TaskBoard = () => {
     });
   };
 
-  const generateBoard = () => {
-    const newBoard = {
-      columns: STATES.map(({ key, value }) => ({
-        id: key,
-        title: value,
-        cards: propOr({}, 'cards', boardCards[key]),
-        meta: propOr({}, 'meta', boardCards[key]),
-      })),
-    };
-
-    setBoard(newBoard);
-  };
-
   const loadBoard = () => {
     STATES.map(({ key }) => loadColumnInitial(key));
   };
 
   useEffect(() => loadBoard(), []);
-  useEffect(() => generateBoard(), [boardCards]);
 
   const handleCardDragEnd = (task, source, destination) => {
     const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
@@ -100,6 +101,7 @@ const TaskBoard = () => {
         loadColumnInitial(source.fromColumnId);
       })
       .catch((error) => {
+        // eslint-disable-next-line no-alert
         alert(`Move failed! ${error.message}`);
       });
   };
