@@ -9,7 +9,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import useStyles from './useStyles';
 
 const Task = ({ task, onClick }) => {
-  const styles = useStyles;
+  const styles = useStyles();
 
   const handleClick = () => onClick(task);
   const action = (
